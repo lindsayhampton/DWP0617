@@ -55,6 +55,10 @@ h4 {
 	padding-top:5px
 }
 
+h5 {
+	font-weight: bold;
+}
+
 .columns.large-centered {
 	padding-left:5px;
 	padding-right:5px
