@@ -16,6 +16,11 @@ ul {
 	text-transform:uppercase
 }
 
+li {
+	list-style: none;
+	display: inline;
+}
+
 ul.inline-list.right {
 	text-transform:none
 }
@@ -109,7 +114,8 @@ h5 {
 	background-color:transparent;
 	border-width:0;
 	text-align:center;
-	box-shadow:0 0 0
+	box-shadow:0 0 0;
+	color: #fff;
 }
 
 .button:hover {
