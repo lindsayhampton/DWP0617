@@ -1,0 +1,98 @@
+1. SSH key is added on droplet creation
+1:A. Not sure how to use SSH just yet, the key is generated, and on the server from your local machine.
+
+2. Created non root user
+2:A. user is lindsay
+2:B. pass is poodles
+2:C. This is done with the console via browser from digital ocean. It needed to be done with the ssh.
+2:C. But it is there regardless.
+2:D. adduser lindsay
+2:E. Follow the prompts, it asks for a password, and some personal information. You can leave the 
+2:E. perosnal information blank by hitting enter
+2:F. adduser lindsay sudo
+2:G. The line above will put user lindsay in the sudo group with elevated permissions.
+
+3. You can ssh in with lindsay@198.199.84.69 and the pass is poodles
+3:A To do this go into terminal and type in lindsay@198.199.84.69
+3:B It'll prompt for the pass it is poodles
+
+4. Update Package System
+4:A. While ssh'd into the server from terminal as user lindsay type in
+4:B. sudo apt-get update
+4:C. It will prompt for the pass for lindsay.
+
+5. Upgrade Package System
+5:A. While ssh'd into the server from terminal as user lindsay type in
+5:B. sudo apt-get upgrade
+
+6. Update System Level Packages
+6:A. While ssh'd into the server from terminal as user lindsay type in
+6:B. sudo aptitude update
+6:C. After that finishes type in 
+6:D. sudo aptitude safe-upgrade
+6:E. After that finishes type in
+6:F. sudo reboot
+
+7. Install and Config Git
+7:A. While ssh'd into the server from terminal as user lindsay type in
+7:B. sudo apt-get install git-core
+7:C. Config Git
+7:D. git config --global user.name "Lindsay Hampton"
+7:E. git config --global user.email lrhampton@fullsail.edu
+7:F. Confirm settings
+7:G. git config --list
+7:H. ssh-keygen -t rsa -C "lrhampton@fullsail.edu"
+7:H. It'll ask for a custom name, don't just press enter.
+7:I. Enter a passphrase and reenter it.
+7:J. less ~/.ssh/id_rsa.pub
+7:J. Copy all of the contents
+7:K. Go to github settings page, and add the key.
+
+8. Install and Config Apache
+8:A. While ssh'd into the server from terminal as user lindsay type in
+8:B. sudo apt-get install apache2
+8:C. Configure ServerName
+8:D. sudo service apache2 restart
+8:E. Take note that a failure to restart is expected
+8:F. The server name is what is erroring out so we need to edit the config file
+8:F. sudo pico /etc/apache2/conf.d/security
+8:F. At the bottom of the file add ServerName localhost
+8:G. sudo service apache2 restart, this should be successful
+
+9. Restrict Access
+9:A. While ssh'd in to the server with terminal as user lindsay type in
+9:B. sudo pico /etc/apache2/conf.d/security
+9:C. Uncomment out the <Dicrectory/> and it's closing tag
+9:D. Add Options FollowSymLinks
+9:E. sudo service apache2 restart
+9:F. Change the permissions on /var/www
+9:G. sudo chown -R lindsay /var/www
+
+10. Configure Git Deployment
+10:A. While ssh'd into the server from terminal as user lindsay type in
+10:B. sudo mkdir /var/repos/
+10:C. sudo chown lindsay /var/repos
+10:D. cd /var/repos
+10:E. mkdir DWP0617.git
+11:F. cd DWP0617.git
+11:G. git init --bare
+11:H. cd /var/repos/DWP0617.git/hooks
+11:I. pico post-receive
+11:J. #!/bin/sh
+11:J. GIT_WORK_TREE=/var/www git checkout -f
+11:K. chmod +x post-receive
+11:L. In the local environment, not in the server.
+11:M. git remote add staging ssh://lindsay@192.241.136.216/var/repos/DWP0617.git
+11:N. git remote add prodServer ssh://lindsay@198.199.84.69/var/repos/DWP0617.git
+
+To push to the staging server
+git push staging master
+
+To push to the production server
+git push prodServer master
+
+Staging is for the testing of a build to make sure it's 100% ready to go production
+and be used by your consumer base.
+
+
+
